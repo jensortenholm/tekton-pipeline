@@ -30,6 +30,7 @@ import (
 	"sync"
 	"syscall"
 
+	reaper "github.com/ramr/go-reaper"
 	"github.com/tektoncd/pipeline/pkg/entrypoint"
 )
 
@@ -138,6 +139,11 @@ func (rr *realRunner) Run(ctx context.Context, args ...string) error {
 			}
 		}
 	}()
+
+	// Goroutine for reaping orphaned processes (zombies)
+	cfg := reaper.MakeConfig()
+	cfg.Debug = false
+	go reaper.Start(cfg)
 
 	// Wait for command to exit
 	// as os.exec [note](https://github.com/golang/go/blob/ee522e2cdad04a43bc9374776483b6249eb97ec9/src/os/exec/exec.go#L897-L906)
