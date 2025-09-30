@@ -143,7 +143,7 @@ func (rr *realRunner) Run(ctx context.Context, args ...string) error {
 	// Goroutine for reaping orphaned processes (zombies)
 	cfg := reaper.MakeConfig()
 	cfg.Debug = false
-  cfg.DisablePid1Check = true
+	cfg.DisablePid1Check = true
 	go reaper.Start(cfg)
 
 	// Wait for command to exit
